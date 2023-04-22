@@ -4,6 +4,7 @@ import { ReelGroup } from "../Reel/ReelGroup";
 import { ReelsController } from "../Reel/ReelsController";
 
 export class FruitGameScene extends Scene{
+    private reelsController: ReelsController;
     constructor(){
         super({key: "FruitGame"});
     }
@@ -16,14 +17,14 @@ export class FruitGameScene extends Scene{
     create(){
         this.add.sprite(640, 360, "bg", "bg.jpg");
         const reelConfig: any = fruitReels;
-        const reelGroup: ReelGroup = new ReelGroup(this, 0, 0, null, reelConfig);
+        this.reelsController = new ReelsController(this, reelConfig);
         this.add.sprite(640, 360, "bg", "bg.png");
-        new ReelsController(this, reelGroup, reelConfig);
         this.initializeButtons();
     }
 
     /** initialize visible buttons on fruit game scene */
     initializeButtons(): void{
+        this.reelsController.switchToButtonClick(this.add.sprite(200, 625, "buttons", "btn_play.png"));
         this.add.sprite(1000, 615, "buttons", "btn-spin.png");
         this.add.sprite(420, 615, "buttons", "btn-coin.png");
         this.add.sprite(595, 615, "buttons", "btn-coin.png");

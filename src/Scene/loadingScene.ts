@@ -23,7 +23,7 @@ export class loadingScene extends Scene {
         this.load.image('7', 'Images/Symbols/7.png');
         this.load.image('BAR', 'Images/Symbols/BAR.png');
         this.load.image('Cherry', 'Images/Symbols/Cherry.png');
-        this.load.image("baseGameBG", 'Images/BackGrounds/baseGameBG.jpg');
+        this.load.image("baseGameBG", 'Images/BackGrounds/baseGameBG.png');
         this.load.atlas("bg", 'Images/BackGrounds/bg.png', 'Images/BackGrounds/bg.json');
         this.load.atlas("symbols", 'Images/Symbols/symbols.png', 'Images/Symbols/symbols.json');
         this.load.atlas("buttons", 'Images/buttons/button.png', 'Images/buttons/button.json');
@@ -75,7 +75,7 @@ export class loadingScene extends Scene {
         this.progressBox.destroy();
         this.bg.destroy();
         this.children.removeAll();
-        this.scene.start("FruitGame");
+        this.scene.start(Boolean(Math.round(Math.random())) ? "FruitGame" : "BaseGame");
         this.scene.stop("default");
     }
 }

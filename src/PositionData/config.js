@@ -4,7 +4,7 @@ module.exports = {
         symbolHeight: 121,
         symbolCount: 4,
         x: 287,
-        y: 110.5,
+        y: 150,
         symbolGap: 5,
         spinDelay: 150,
         spinBlurAlpha: 0.4,
@@ -49,6 +49,7 @@ module.exports = {
         ]
     },
     fruitReels: {
+        requestAnimationFrame: true,
         symbolWidth: 112,
         symbolHeight: 94,
         symbolCount: 4,

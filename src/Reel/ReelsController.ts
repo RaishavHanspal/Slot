@@ -7,9 +7,15 @@ import { Reel } from "./Reel";
 import { ReelGroup } from "./ReelGroup";
 
 export class ReelsController {
-    private clickObject: GameObjects.Sprite | GameObjects.Container;
-    constructor(private scene: Phaser.Scene, private reelGroup: ReelGroup, private readonly reelsConfig?: IReelConfig) {
+    private reelGroup: ReelGroup;
+    private spinButton: GameObjects.Sprite | GameObjects.Image;
+    constructor(private scene: Phaser.Scene, private readonly reelsConfig?: IReelConfig) {
+        this.initializeReels();
         this.addhandlers();
+    }
+
+    private initializeReels(): void {
+        this.reelGroup = new ReelGroup(this.scene, 0, 0, null, this.reelsConfig);
     }
 
     /** assign handlers to buttons events */
@@ -17,26 +23,28 @@ export class ReelsController {
         /** workaround to add window click event */
         // addEventListener("click", this.spin.bind(this));
         EventUtils.subscribe(EventConstants.onReelStopped, this.onReelStopped, this);
-        if (this.reelsConfig.spinButton) {
-            this.clickObject = this.scene.add.sprite(200, 625, "buttons", "btn_play.png");
-        }
-        else {
-            this.clickObject = this.reelGroup;
-        }
-        this.clickObject.setInteractive();
-        this.clickObject.on("pointerup", this.spin, this);
+        this.scene.input.enabled = true;
+        this.scene.input.addListener("pointerup", this.spin, this);
+    }
+
+    /** remove the spin handler from stage click and add it to button click */
+    public switchToButtonClick(spinButton: GameObjects.Sprite | GameObjects.Image): void {
+        this.scene.input.removeListener("pointerup");
+        this.spinButton = spinButton;
+        this.spinButton.setInteractive();
+        this.spinButton.on("pointerup", this.spin, this);
     }
 
     /** all the reels start spinning */
     private spin() {
-        if (this.reelsConfig.spinButton) {
+        if (this.spinButton) {
             this.scene.tweens.add({
-                targets: this.clickObject,
+                targets: this.spinButton,
                 duration: 100,
                 alpha: this.reelsConfig.spinBlurAlpha
             })
         }
-        this.clickObject.removeInteractive();
+        this.spinButton ? this.spinButton.removeInteractive() : this.scene.input.enabled = false;
         this.reelGroup.reels.forEach((reel: Reel, index) => {
             TimeUtils.setTimeOut(this.reelsConfig.spinDelay * index, this.scene, reel.spin, reel);
         })
@@ -46,18 +54,18 @@ export class ReelsController {
     private onReelStopped(reelId: any) {
         const isLastReel: boolean = reelId === (this.reelsConfig.reelPositions.length - 1);
         if (isLastReel) {
-            if (this.reelsConfig.spinButton) {
+            if (this.reelsConfig.spinButton && this.spinButton) {
                 this.scene.tweens.add({
-                    targets: this.clickObject,
+                    targets: this.spinButton,
                     duration: 100,
                     alpha: 1,
                     onComplete: () => {
-                        this.clickObject.setInteractive();
+                        this.spinButton ? this.spinButton.setInteractive() : this.scene.input.enabled = true;
                     }
                 })
             }
             else {
-                this.clickObject.setInteractive();
+                this.spinButton ? this.spinButton.setInteractive() : this.scene.input.enabled = true;
             }
             console.log("All Reels Stopped!");
         }

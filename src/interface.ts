@@ -4,10 +4,11 @@ export interface IReelProperties{
 }
 
 export interface IReelConfig{
+    requestAnimationFrame: boolean;
     repetitions: number;
     spinSpeed: number;
     spinBlurAlpha: number;
-    symbolImportType: any;
+    symbolImportType: string;
     symbolGap: number;
     y: number;
     x: number;

@@ -16,7 +16,6 @@ export class BaseGameScene extends Scene{
     create(){
         this.add.image(0, 0, "baseGameBG").setScale(2);
         const reelConfig: any = reels;
-        const reelGroup: ReelGroup = new ReelGroup(this, 0, 0, null, reelConfig);
-        new ReelsController(this, reelGroup, reelConfig);
+        new ReelsController(this, reelConfig);
     }
 }
