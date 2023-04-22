@@ -4,6 +4,8 @@ export class loadingScene extends Scene {
     progressBar: Phaser.GameObjects.Rectangle;
     progressBox: Phaser.GameObjects.Rectangle;
     loadingText: Phaser.GameObjects.Text;
+    bg: Phaser.GameObjects.Sprite;
+    bgContainer: Phaser.GameObjects.Container;
     constructor(config?: string | Phaser.Types.Scenes.SettingsConfig) {
         super(config);
     }
@@ -12,16 +14,23 @@ export class loadingScene extends Scene {
     public preload() {
         this.startLoadingProgress();
         this.load.setBaseURL('./Assets');
+        this.load.atlas("bgMenu", 'Images/BackGrounds/bgmenu.png', 'Images/BackGrounds/bgmenu.json').on('complete', () => {
+            this.bg = this.add.sprite(0, 0, "bgMenu", "bgmenu.png").setScale(2);
+            this.bgContainer && this.bgContainer.add(this.bg);
+        }, this)
         this.load.image('2xBAR', 'Images/Symbols/2xBAR.png');
         this.load.image('3xBAR', 'Images/Symbols/3xBAR.png');
         this.load.image('7', 'Images/Symbols/7.png');
         this.load.image('BAR', 'Images/Symbols/BAR.png');
         this.load.image('Cherry', 'Images/Symbols/Cherry.png');
         this.load.image("baseGameBG", 'Images/BackGrounds/baseGameBG.jpg');
+        this.load.atlas ("bg", 'Images/BackGrounds/bg.png', 'Images/BackGrounds/bg.json');
+        this.load.atlas ("symbols", 'Images/Symbols/symbols.png', 'Images/Symbols/symbols.json');
     }
 
     /** starts the loading process with preload */
     private startLoadingProgress(): void {
+        this.bgContainer = this.add.container(0, 0);
         this.progressBar = this.add.rectangle(190, 280, 0, 30, 0xff00ff, 1);
         this.progressBox = this.add.rectangle(630, 280, 900, 50, 0x222222, 0.8);
         this.progressBox.setOrigin(0.5);
@@ -63,8 +72,9 @@ export class loadingScene extends Scene {
         this.progressBox.removeInteractive();
         this.progressBox.off("pointerup");
         this.progressBox.destroy();
+        this.bg.destroy();
         this.children.removeAll();
-        this.scene.start("BaseGame");
+        this.scene.start("FruitGame");
         this.scene.stop("default");
     }
 }

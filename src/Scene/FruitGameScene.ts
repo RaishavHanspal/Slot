@@ -1,11 +1,11 @@
 import { Scene } from "phaser";
-import { reels } from "../PositionData/config";
+import { fruitReels } from "../PositionData/config";
 import { ReelGroup } from "../Reel/ReelGroup";
 import { ReelsController } from "../Reel/ReelsController";
 
-export class BaseGameScene extends Scene{
+export class FruitGameScene extends Scene{
     constructor(){
-        super({key: "BaseGame"});
+        super({key: "FruitGame"});
     }
     
     /** should load these images before setting the scene  - the things loaded here */
@@ -14,9 +14,10 @@ export class BaseGameScene extends Scene{
 
     /** after the preload is completed this should initialize and align the loaded assets */
     create(){
-        this.add.image(0, 0, "baseGameBG").setScale(2);
-        const reelConfig: any = reels;
+        this.add.sprite(640, 360, "bg", "bg.jpg");
+        const reelConfig: any = fruitReels;
         const reelGroup: ReelGroup = new ReelGroup(this, 0, 0, null, reelConfig);
+        this.add.sprite(640, 360, "bg", "bg.png");
         new ReelsController(this, reelGroup, reelConfig);
     }
 }

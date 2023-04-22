@@ -1,11 +1,10 @@
 import { GameObjects } from "phaser";
 import { IReelPosition } from "../interface";
-import config from "../PositionData/config"
 import { Reel } from "./Reel";
 
 export class ReelGroup extends GameObjects.Container{
     public reels: Reel[] = [];
-    constructor(scene: Phaser.Scene, x?: number, y?: number, children?: GameObjects.GameObject[]){
+    constructor(scene: Phaser.Scene, x?: number, y?: number, children?: GameObjects.GameObject[], private readonly reelsConfig?: any){
         super(scene, x, y, children);
         scene.add.existing(this);
         this.createReels();
@@ -14,8 +13,11 @@ export class ReelGroup extends GameObjects.Container{
     }
 
     public createReelGroupMask(){
-        const mask = this.scene.make.graphics({}, false).fillRect(this.x - config.reels.symbolWidth/2, this.y - config.reels.symbolHeight/2, 
-        config.reels.symbolWidth * config.reels.reelPositions.length, (config.reels.symbolHeight + config.reels.symbolGap) * (config.reels.symbolCount));
+        if(!this.reelsConfig.reelGroupMaskOffsets) return;
+        const maskOffsetY: number = this.reelsConfig.reelGroupMaskOffsets.y || 0;
+        const maskOffsetX: number = this.reelsConfig.reelGroupMaskOffsets.x || 0;
+        const mask = this.scene.make.graphics({}, false).fillRect(this.x - this.reelsConfig.symbolWidth/2 - maskOffsetX, this.y - this.reelsConfig.symbolHeight/2 - maskOffsetY, 
+        this.reelsConfig.symbolWidth + this.reelsConfig.reelPositions[this.reelsConfig.reelPositions.length - 1].x + (2 * maskOffsetX), (this.reelsConfig.symbolHeight + this.reelsConfig.symbolGap) * (this.reelsConfig.symbolCount) + (2 * maskOffsetY));
         mask.setName("reelMask");
         const maskObj = this.createGeometryMask(mask);
         this.setMask(maskObj);
@@ -23,10 +25,10 @@ export class ReelGroup extends GameObjects.Container{
 
     /** creates all reels as per the properties in config */
     private createReels(): void{
-        this.x = config.reels.x;
-        this.y = config.reels.y;
-        config.reels.reelPositions.forEach((reelPosition: IReelPosition, index) => {
-            const reel: Reel = new Reel(this.scene, reelPosition.x, reelPosition.y, null, index);
+        this.x = this.reelsConfig.x;
+        this.y = this.reelsConfig.y;
+        this.reelsConfig.reelPositions.forEach((reelPosition: IReelPosition, index: number) => {
+            const reel: Reel = new Reel(this.scene, reelPosition.x, reelPosition.y, null, index, this.reelsConfig);
             reel.setName("reel"+ index);
             this.add(reel);
             this.reels.push(reel);

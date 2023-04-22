@@ -1,10 +1,9 @@
-import config from "../PositionData/config";
 import { TimeUtils } from "../TimeUtils";
 import { Reel } from "./Reel";
 import { ReelGroup } from "./ReelGroup";
 
 export class ReelsController{
-    constructor(private scene: Phaser.Scene, private reelGroup: ReelGroup){
+    constructor(private scene: Phaser.Scene, private reelGroup: ReelGroup, private readonly reelsConfig?: any){
         /** workaround */
         addEventListener("click", this.spin.bind(this));
     }
@@ -14,7 +13,7 @@ export class ReelsController{
     }
     spin(){
         this.reelGroup.reels.forEach((reel: Reel, index) => {
-            TimeUtils.setTimeOut(config.reels.spinDelay * index, this.scene, reel.spin, reel);
+            TimeUtils.setTimeOut(this.reelsConfig.spinDelay * index, this.scene, reel.spin, reel);
         })
     }
 }
