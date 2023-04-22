@@ -19,5 +19,14 @@ export class FruitGameScene extends Scene{
         const reelGroup: ReelGroup = new ReelGroup(this, 0, 0, null, reelConfig);
         this.add.sprite(640, 360, "bg", "bg.png");
         new ReelsController(this, reelGroup, reelConfig);
+        this.initializeButtons();
+    }
+
+    /** initialize visible buttons on fruit game scene */
+    initializeButtons(): void{
+        this.add.sprite(1000, 615, "buttons", "btn-spin.png");
+        this.add.sprite(420, 615, "buttons", "btn-coin.png");
+        this.add.sprite(595, 615, "buttons", "btn-coin.png");
+        this.add.sprite(800, 615, "buttons", "btn-maxbet.png");       
     }
 }

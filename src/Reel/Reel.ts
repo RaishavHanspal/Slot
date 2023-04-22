@@ -1,7 +1,10 @@
-import { Display, GameObjects, Utils } from "phaser";
+import { GameObjects, Utils } from "phaser";
+import { EventConstants } from "../Constants/Events";
+import { IReelConfig } from "../interface";
+import { EventUtils } from "../Utilities/EventUtils";
 
 export class Reel extends GameObjects.Container {
-    constructor(scene: Phaser.Scene, x?: number, y?: number, children?: GameObjects.GameObject[], private id?: number, private readonly reelsConfig?: any) {
+    constructor(scene: Phaser.Scene, x?: number, y?: number, children?: GameObjects.GameObject[], private id?: number, private readonly reelsConfig?: IReelConfig) {
         super(scene, x, y, children);
         this.setStoppedReel();
     }
@@ -49,14 +52,14 @@ export class Reel extends GameObjects.Container {
     public spin() {
         this.scene.tweens.add({
             targets: this,
-            alpha: this.reelsConfig.spinBlurAlpha,
-            duration: this.reelsConfig.spinSpeed,
+            alpha: this.reelsConfig.spinBlurAlpha || 0.5,
+            duration: this.reelsConfig.spinSpeed || 100,
         });
         this.scene.tweens.add({
             targets: this,
-            y: (this.reelsConfig.symbolHeight + this.reelsConfig.symbolGap),
-            duration: this.reelsConfig.spinSpeed,
-            repeat: this.reelsConfig.repetitions,
+            y: (this.reelsConfig.symbolHeight + this.reelsConfig.symbolGap || 0),
+            duration: this.reelsConfig.spinSpeed || 100,
+            repeat: this.reelsConfig.repetitions || 10,
             onRepeat: () => {
                 this.onSymbolShifted();
             },
@@ -64,10 +67,15 @@ export class Reel extends GameObjects.Container {
                 this.scene.tweens.add({
                     targets: this,
                     alpha: 1,
-                    duration: this.reelsConfig.spinSpeed,
+                    duration: this.reelsConfig.spinSpeed || 100,
                 });
                 this.onSymbolShifted();
+                this.onReelStopped();
             },
         })
+    }
+
+    private onReelStopped(): void{
+        EventUtils.emit(EventConstants.onReelStopped, this.id);
     }
 }

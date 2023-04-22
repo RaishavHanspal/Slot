@@ -1,10 +1,10 @@
 import { GameObjects } from "phaser";
-import { IReelPosition } from "../interface";
+import { IReelConfig, IReelProperties } from "../interface";
 import { Reel } from "./Reel";
 
 export class ReelGroup extends GameObjects.Container{
     public reels: Reel[] = [];
-    constructor(scene: Phaser.Scene, x?: number, y?: number, children?: GameObjects.GameObject[], private readonly reelsConfig?: any){
+    constructor(scene: Phaser.Scene, x?: number, y?: number, children?: GameObjects.GameObject[], private readonly reelsConfig?: IReelConfig){
         super(scene, x, y, children);
         scene.add.existing(this);
         this.createReels();
@@ -27,8 +27,8 @@ export class ReelGroup extends GameObjects.Container{
     private createReels(): void{
         this.x = this.reelsConfig.x;
         this.y = this.reelsConfig.y;
-        this.reelsConfig.reelPositions.forEach((reelPosition: IReelPosition, index: number) => {
-            const reel: Reel = new Reel(this.scene, reelPosition.x, reelPosition.y, null, index, this.reelsConfig);
+        this.reelsConfig.reelPositions.forEach((reelProperties: IReelProperties, index: number) => {
+            const reel: Reel = new Reel(this.scene, reelProperties.x, reelProperties.y, null, index, this.reelsConfig);
             reel.setName("reel"+ index);
             this.add(reel);
             this.reels.push(reel);

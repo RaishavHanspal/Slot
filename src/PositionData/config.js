@@ -59,6 +59,7 @@ module.exports = {
         // reelGroupMaskOffsets: {
         //     y: 16
         // },
+        spinButton: true,
         spinBlurAlpha: 0.4,
         spinSpeed: 100,
         repetitions: 20,

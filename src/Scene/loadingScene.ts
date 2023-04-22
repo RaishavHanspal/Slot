@@ -24,8 +24,9 @@ export class loadingScene extends Scene {
         this.load.image('BAR', 'Images/Symbols/BAR.png');
         this.load.image('Cherry', 'Images/Symbols/Cherry.png');
         this.load.image("baseGameBG", 'Images/BackGrounds/baseGameBG.jpg');
-        this.load.atlas ("bg", 'Images/BackGrounds/bg.png', 'Images/BackGrounds/bg.json');
-        this.load.atlas ("symbols", 'Images/Symbols/symbols.png', 'Images/Symbols/symbols.json');
+        this.load.atlas("bg", 'Images/BackGrounds/bg.png', 'Images/BackGrounds/bg.json');
+        this.load.atlas("symbols", 'Images/Symbols/symbols.png', 'Images/Symbols/symbols.json');
+        this.load.atlas("buttons", 'Images/buttons/button.png', 'Images/buttons/button.json');
     }
 
     /** starts the loading process with preload */
