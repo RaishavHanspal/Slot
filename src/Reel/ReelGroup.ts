@@ -1,6 +1,6 @@
 import { GameObjects } from "phaser";
 import { IReelPosition } from "../interface";
-import reelConfig from "../PositionData/reelConfig"
+import config from "../PositionData/config"
 import { Reel } from "./Reel";
 
 export class ReelGroup extends GameObjects.Container{
@@ -14,18 +14,18 @@ export class ReelGroup extends GameObjects.Container{
     }
 
     public createReelGroupMask(){
-        const mask = this.scene.make.graphics({}, false).fillStyle(0, 1).fillRect(this.x - reelConfig.reels.symbolWidth/2, this.y - reelConfig.reels.symbolHeight/2, 
-        reelConfig.reels.symbolWidth * reelConfig.reels.reelPositions.length, (reelConfig.reels.symbolHeight + reelConfig.reels.symbolGap) * (reelConfig.reels.symbolCount));
+        const mask = this.scene.make.graphics({}, false).fillRect(this.x - config.reels.symbolWidth/2, this.y - config.reels.symbolHeight/2, 
+        config.reels.symbolWidth * config.reels.reelPositions.length, (config.reels.symbolHeight + config.reels.symbolGap) * (config.reels.symbolCount));
         mask.setName("reelMask");
         const maskObj = this.createGeometryMask(mask);
         this.setMask(maskObj);
     }
 
-    /** creates all reels as per the properties in reelConfig */
+    /** creates all reels as per the properties in config */
     private createReels(): void{
-        this.x = reelConfig.reels.x;
-        this.y = reelConfig.reels.y;
-        reelConfig.reels.reelPositions.forEach((reelPosition: IReelPosition, index) => {
+        this.x = config.reels.x;
+        this.y = config.reels.y;
+        config.reels.reelPositions.forEach((reelPosition: IReelPosition, index) => {
             const reel: Reel = new Reel(this.scene, reelPosition.x, reelPosition.y, null, index);
             reel.setName("reel"+ index);
             this.add(reel);

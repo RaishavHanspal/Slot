@@ -1,3 +1,5 @@
+import config from "../PositionData/config";
+import { TimeUtils } from "../TimeUtils";
 import { Reel } from "./Reel";
 import { ReelGroup } from "./ReelGroup";
 
@@ -11,8 +13,8 @@ export class ReelsController{
         this.reelGroup.on("pointerup", this.spin, this);
     }
     spin(){
-        this.reelGroup.reels.forEach((reel: Reel) => {
-            reel.spin();
+        this.reelGroup.reels.forEach((reel: Reel, index) => {
+            TimeUtils.setTimeOut(config.reels.spinDelay * index, this.scene, reel.spin, reel);
         })
     }
 }

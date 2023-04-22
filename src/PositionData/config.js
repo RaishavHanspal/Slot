@@ -6,6 +6,10 @@ export default {
         x: 287,
         y: 110.5,
         symbolGap: 5,
+        spinDelay: 150,
+        spinBlurAlpha: 0.4,
+        spinSpeed: 100,
+        repetitions: 20,
         reelPositions: [{
                 x: 0,
                 y: 0
@@ -38,5 +42,9 @@ export default {
             "7",
             "Cherry"
         ]
+    },
+    game: {
+        width: 1280,
+        height: 720
     }
 }
