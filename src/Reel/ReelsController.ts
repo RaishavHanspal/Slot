@@ -1,4 +1,4 @@
-import { BaseGameScene } from "../Scene/BaseGameScene";
+import { Reel } from "./Reel";
 import { ReelGroup } from "./ReelGroup";
 
 export class ReelsController{
@@ -7,8 +7,12 @@ export class ReelsController{
         addEventListener("click", this.spin.bind(this));
     }
 
+    addhandlers(): void{
+        this.reelGroup.on("pointerup", this.spin, this);
+    }
     spin(){
-        alert("reel spin start");
-        this.reelGroup.reels[0].spin();
+        this.reelGroup.reels.forEach((reel: Reel) => {
+            reel.spin();
+        })
     }
 }

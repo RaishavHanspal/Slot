@@ -17,6 +17,7 @@ export class loadingScene extends Scene {
         this.load.image('7', 'Images/Symbols/7.png');
         this.load.image('BAR', 'Images/Symbols/BAR.png');
         this.load.image('Cherry', 'Images/Symbols/Cherry.png');
+        this.load.image("baseGameBG", 'Images/BackGrounds/baseGameBG.jpg');
     }
 
     /** starts the loading process with preload */

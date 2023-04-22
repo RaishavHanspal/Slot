@@ -9,7 +9,16 @@ export class ReelGroup extends GameObjects.Container{
         super(scene, x, y, children);
         scene.add.existing(this);
         this.createReels();
+        this.createReelGroupMask();
         return this;
+    }
+
+    public createReelGroupMask(){
+        const mask = this.scene.make.graphics({}, false).fillStyle(0, 1).fillRect(this.x - reelConfig.reels.symbolWidth/2, this.y - reelConfig.reels.symbolHeight/2, 
+        reelConfig.reels.symbolWidth * reelConfig.reels.reelPositions.length, (reelConfig.reels.symbolHeight + reelConfig.reels.symbolGap) * (reelConfig.reels.symbolCount));
+        mask.setName("reelMask");
+        const maskObj = this.createGeometryMask(mask);
+        this.setMask(maskObj);
     }
 
     /** creates all reels as per the properties in reelConfig */
@@ -17,7 +26,7 @@ export class ReelGroup extends GameObjects.Container{
         this.x = reelConfig.reels.x;
         this.y = reelConfig.reels.y;
         reelConfig.reels.reelPositions.forEach((reelPosition: IReelPosition, index) => {
-            const reel: Reel = new Reel(this.scene, reelPosition.x, reelPosition.y);
+            const reel: Reel = new Reel(this.scene, reelPosition.x, reelPosition.y, null, index);
             reel.setName("reel"+ index);
             this.add(reel);
             this.reels.push(reel);
